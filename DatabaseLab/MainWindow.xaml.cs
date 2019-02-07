@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.OleDb;
 
 namespace DatabaseLab
 {
@@ -20,9 +21,26 @@ namespace DatabaseLab
     /// </summary>
     public partial class MainWindow : Window
     {
+        OleDbConnection cn;
+
         public MainWindow()
         {
             InitializeComponent();
+            cn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\DatabaseLab.accdb");
+        }
+
+        private void AssetsButton_Click(object sender, RoutedEventArgs e)
+        {
+            string query = "select * from Assets";
+            OleDbCommand cmd = new OleDbCommand(query, cn);
+            cn.Open();
+            OleDbDataReader read = cmd.ExecuteReader();
+            string data = "";
+            while (read.Read())
+            {
+                data += read[0].ToString() + "\n";
+            }
+            AssetText.Text = data;
         }
     }
 }
