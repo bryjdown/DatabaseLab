@@ -34,13 +34,51 @@ namespace DatabaseLab
             string query = "select * from Assets";
             OleDbCommand cmd = new OleDbCommand(query, cn);
             cn.Open();
+
             OleDbDataReader read = cmd.ExecuteReader();
-            string data = "";
+            //Hardcoded an arbitrary magic number here. Ideally would be more thoughtful.
+            object[] data = new object[10];
+            string atext = "";
+
             while (read.Read())
             {
-                data += read[0].ToString() + "\n";
+                read.GetValues(data);
+                //And here.
+                for(int i = 0; i < 10; i++)
+                {
+                    atext += data[i] + " ";
+                }
+                atext += "\n";
             }
-            AssetText.Text = data;
+
+            AssetText.Text = atext;
+            cn.Close();
+        }
+
+        private void EmployeesButton_Click(object sender, RoutedEventArgs e)
+        {
+            string query = "select * from Employees";
+            OleDbCommand cmd = new OleDbCommand(query, cn);
+            cn.Open();
+
+            OleDbDataReader read = cmd.ExecuteReader();
+            //Hardcoded an arbitrary magic number here. Ideally would be more thoughtful.
+            object[] data = new object[10];
+            string etext = "";
+
+            while (read.Read())
+            {
+                read.GetValues(data);
+                //And here.
+                for (int i = 0; i < 10; i++)
+                {
+                    etext += data[i] + " ";
+                }
+                etext += "\n";
+            }
+
+            EmployeeText.Text = etext;
+            cn.Close();
         }
     }
 }
